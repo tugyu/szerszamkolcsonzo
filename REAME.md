@@ -63,3 +63,106 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 ## License
 
 [Choose a license and add it here, e.g., MIT License]
+
+Hungarian description, not translated from the English part
+
+# Szerszámkölcsönző - Demo Verzió
+
+## Leírás
+
+A **Szerszámkölcsönző** egy egyszerű webalkalmazás, amely lehetővé teszi a szerszámok kölcsönzését és kezelését. Ez a projekt egy demó eszköz, amelyet egyetlen felhasználó számára terveztem felhasználói élmény bemutatására. Az alkalmazás néhány funkciót egyszerűsít, hogy könnyen érthető és kezelhető legyen.
+
+## Funkciók
+
+- **Szerszámok Megtekintése**: Lista a rendelkezésre álló szerszámokról és azok mennyiségéről.
+- **Személyek Kezelése**: Személyek hozzáadása és keresése név vagy cím alapján.
+- **Kölcsönzések Nyilvántartása**: Szerszámok kölcsönzése és visszahozatala, valamint a kölcsönzési adatok megtekintése.
+- **Paginálás**: Adatok oldalakra bontása a jobb kezelhetőség érdekében.
+- **Modal Ablakok**: Részletes személyi adatok megjelenítése felugró ablakban.
+
+## Telepítési Útmutató
+
+### Előfeltételek
+
+- Python 3.12 vagy újabb
+- Pip csomagkezelő
+
+### Lépések
+
+1. **Klónozd a repót:**
+    ```bash
+    git clone https://github.com/felhasznalonev/szerszamkolcsonzo.git
+    cd szerszamkolcsonzo
+    ```
+
+2. **Hozz létre virtuális környezetet és aktiváld:**
+    ```bash
+    python -m venv venv
+    # Windows
+    venv\Scripts\activate
+    # macOS/Linux
+    source venv/bin/activate
+    ```
+
+3. **Telepítsd a függőségeket:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Inicializáld az adatbázist:**
+    ```bash
+    python init_db.py
+    ```
+
+5. **Futtasd az alkalmazást:**
+    ```bash
+    python app.py
+    ```
+
+6. **Nyisd meg a böngészőt és navigálj a következő címre:**
+    ```
+    http://127.0.0.1:5000/
+    ```
+
+## Használati Útmutató
+
+### Szerszámok
+
+- Az alkalmazás főoldalán megtekintheted a rendelkezésre álló szerszámokat és azok mennyiségét.
+- Szerszámot hozzáadhatsz a "Szerszám Hozzáadása" gombra kattintva.
+
+### Személyek
+
+- A "Személyek" oldalon kereshetsz név vagy cím alapján.
+- Új személyt adhatsz hozzá a "Új Személy Hozzáadása" gombra kattintva.
+
+### Kölcsönzések
+
+- A "Kölcsönzések" oldalon megtekintheted az aktuális kölcsönzéseket.
+- Szerszámot kölcsönözhetsz a "Kölcsönzés" gombra kattintva.
+- Kölcsönzött szerszámot visszahozhatsz a "Visszahozva" gombra kattintva.
+- Személy részleteit megtekintheted a nevek linkjére kattintva, ami felugró ablakban jeleníti meg az adatokat.
+
+## Technológiák
+
+- **Backend**: Flask (Python)
+- **Adatbázis**: SQLite (Fejlesztéshez), PostgreSQL (Többfelhasználós környezethez ajánlott)
+- **Frontend**: Bootstrap, jQuery
+- **Deployment**: Gunicorn (Termelési szerverhez)
+
+## Fejlesztési Állapot
+
+Ez az alkalmazás egy demó verzió, amelyet egyetlen felhasználó számára terveztem. Néhány funkció egyszerűsítve van a könnyebb használhatóság érdekében. A jövőbeni fejlesztések között szerepel a többfelhasználós támogatás, biztonsági intézkedések, és egy robusztusabb adatbázis-rendszer bevezetése.
+
+## Konfigurációk
+
+- **DATABASE_URI**: Az adatbázis kapcsolati URI-ja a `app.py` fájlban konfigurálható.
+- **WSGI Server**: A termelési környezetben Gunicorn vagy más WSGI szerver használata ajánlott.
+
+## Hozzájárulás
+
+Ez egy demó projekt, és jelenleg nincs tervezett hozzájárulási lehetőség. Bármilyen javaslatot vagy kérdést a projekt tulajdonosának (saját magadnak) küldj.
+
+## Licenc
+
+Ez a projekt szabadon használható és módosítható a saját céljaidra. Nincs jogi kötelezettség a használata.
