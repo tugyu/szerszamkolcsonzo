@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Aktuális Kölcsönzések</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <!-- Rendezhető fejléc oszlopok -->
+            <th>
+                <a href="{{ url_for('loans', sort='person_name', order='asc' if current_sort != 'person_name' or current_order == 'desc' else 'desc', page=page) }}">
+                    Személy
+                    {% if current_sort == 'person_name' %}
+                        {% if current_order == 'asc' %}
+                            &#9650;
+                        {% else %}
+                            &#9660;
+                        {% endif %}
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="{{ url_for('loans', sort='tool_name', order='asc' if current_sort != 'tool_name' or current_order == 'desc' else 'desc', page=page) }}">
+                    Szerszám
+                    {% if current_sort == 'tool_name' %}
+                        {% if current_order == 'asc' %}
+                            &#9650;
+                        {% else %}
+                            &#9660;
+                        {% endif %}
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="{{ url_for('loans', sort='loan_date', order='asc' if current_sort != 'loan_date' or current_order == 'desc' else 'desc', page=page) }}">
+                    Kölcsönzés Dátuma
+                    {% if current_sort == 'loan_date' %}
+                        {% if current_order == 'asc' %}
+                            &#9650;
+                        {% else %}
+                            &#9660;
+                        {% endif %}
+                    {% endif %}
+                </a>
+            </th>
+            <th>
+                <a href="{{ url_for('loans', sort='return_date', order='asc' if current_sort != 'return_date' or current_order == 'desc' else 'desc', page=page) }}">
+                    Visszahozatal Dátuma
+                    {% if current_sort == 'return_date' %}
+                        {% if current_order == 'asc' %}
+                            &#9650;
+                        {% else %}
+                            &#9660;
+                        {% endif %}
+                    {% endif %}
+                </a>
+            </th>
+            <th>Teendő</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loan in loans %}
+        <tr>
+            <td>
+                <a href="#" data-toggle="modal" data-target="#personModal" data-id="{{ loan.id }}" class="person-link">{{ loan.person_name }}</a>
+            </td>
+            <td>{{ loan.tool_name }}</td>
+            <td>{{ loan.loan_date }}</td>
+            <td>{{ loan.return_date }}</td>
+            <td>
+                <form action="{{ url_for('return_tool', loan_id=loan.id) }}" method="post">
+                    <button type="submit" class="btn btn-sm btn-success">Visszahozva</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Paginálás -->
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="page-item {% if page == 1 %}disabled{% endif %}">
+      <a class="page-link" href="{{ url_for('loans', sort=current_sort, order=current_order, page=page-1) }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% for p in range(1, total_pages + 1) %}
+    <li class="page-item {% if p == page %}active{% endif %}">
+      <a class="page-link" href="{{ url_for('loans', sort=current_sort, order=current_order, page=p) }}">{{ p }}</a>
+    </li>
+    {% endfor %}
+    <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+      <a class="page-link" href="{{ url_for('loans', sort=current_sort, order=current_order, page=page+1) }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="personModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Személy Részletei</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Bezárás">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Dinamikusan betöltött adatok -->
+        <p><strong>Név:</strong> <span id="modal-name"></span></p>
+        <p><strong>Cím:</strong> <span id="modal-address"></span></p>
+        <!-- További részletek hozzáadhatók -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('#personModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Az elem, ami kiváltotta a modal megjelenését
+            var loanId = button.data('id'); // Az adat-id attribútum értéke
+
+            // AJAX kérés az illető részletes adatainak lekéréséhez
+            $.ajax({
+                url: '/person_details/' + loanId,
+                method: 'GET',
+                success: function(data){
+                    if(data.error){
+                        $('#modal-name').text('Nincs adat');
+                        $('#modal-address').text('');
+                        $('.modal-title').text('Személy Részletei');
+                    } else {
+                        $('#modal-name').text(data.name);
+                        $('#modal-address').text(data.address);
+                        // Frissítjük a modal címet is
+                        $('.modal-title').text(data.name + ' Részletei');
+                    }
+                },
+                error: function(){
+                    $('#modal-name').text('Hiba történt');
+                    $('#modal-address').text('');
+                    $('.modal-title').text('Személy Részletei');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

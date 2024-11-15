@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Elérhető Szerszámok</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Név</th>
+            <th>Elérhető Mennyiség</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tool in tools %}
+        <tr>
+            <td>{{ tool.name }}</td>
+            <td>{{ tool.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Kölcsönzés</h2>
+<form method="post">
+    <div class="form-group">
+        <label for="person_id">Személy</label>
+        <select class="form-control" id="person_id" name="person_id" required>
+            {% for person in persons %}
+            <option value="{{ person.id }}">{{ person.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="tool_id">Szerszám</label>
+        <select class="form-control" id="tool_id" name="tool_id" required>
+            {% for tool in tools %}
+            <option value="{{ tool.id }}">{{ tool.name }} (Elérhető: {{ tool.quantity }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="loan_days">Kölcsönzés Hosszúsága (napok)</label>
+        <input type="number" class="form-control" id="loan_days" name="loan_days" min="1" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Kölcsönöz</button>
+</form>
+{% endblock %}
