@@ -62,7 +62,7 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ## License
 
-[Choose a license and add it here, e.g., MIT License]
+MIT License
 
 Hungarian description, not translated from the English part
 
@@ -161,8 +161,8 @@ Ez az alkalmazás egy demó verzió, amelyet egyetlen felhasználó számára te
 
 ## Hozzájárulás
 
-Ez egy demó projekt, és jelenleg nincs tervezett hozzájárulási lehetőség. Bármilyen javaslatot vagy kérdést a projekt tulajdonosának (saját magadnak) küldj.
+Ez egy demó projekt, ha szeretnéd, fejleszd tovább!
 
 ## Licenc
 
-Ez a projekt szabadon használható és módosítható a saját céljaidra. Nincs jogi kötelezettség a használata.
+Ez a projekt MIT licenc szerint használható.
