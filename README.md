@@ -91,7 +91,7 @@ A **Szerszámkölcsönző** egy egyszerű webalkalmazás, amely lehetővé teszi
 
 1. **Klónozd a repót:**
     ```bash
-    git clone https://github.com/felhasznalonev/szerszamkolcsonzo.git
+    git clone https://github.com/tugyu/szerszamkolcsonzo.git
     cd szerszamkolcsonzo
     ```
 
