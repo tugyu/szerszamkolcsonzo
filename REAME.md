@@ -6,7 +6,13 @@ This project is a demonstration of a simple tool lending webserver built with Py
 
 ## Project Goal
 
+This application is not intended for production use and should not be relied upon for managing real-world tool lending scenarios.
+
 The main goal of this project was to explore the capabilities of readily available tools and libraries for web development in Python. It simulates a tool lending service with basic functionalities like adding tools, lending them out to customers, and tracking their return dates.
+
+This code is for demonstration purposes only. It does not handle user permissions or concurrency. Issues could arise if multiple users interact with the application simultaneously. For example:
+* **Overlapping tool assignments:**  Multiple users could potentially "borrow" the last available tool, leading to inconsistencies in the inventory.
+* **Inventory discrepancies:** The inventory display may not update in real-time to reflect changes made by other users, potentially showing incorrect availability.
 
 ## Development Process
 
