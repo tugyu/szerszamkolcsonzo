@@ -63,7 +63,9 @@
             <td>
                 <a href="#" data-toggle="modal" data-target="#personModal" data-id="{{ loan.id }}" class="person-link">{{ loan.person_name }}</a>
             </td>
-            <td>{{ loan.tool_name }}</td>
+            <td>
+                <span data-toggle="tooltip" data-placement="top" title="Raktárkészlet: {{ loan.tool_quantity }}">{{ loan.tool_name }}</span>
+            </td>
             <td>{{ loan.loan_date }}</td>
             <td>{{ loan.return_date }}</td>
             <td>
@@ -111,7 +113,10 @@
         <!-- Dinamikusan betöltött adatok -->
         <p><strong>Név:</strong> <span id="modal-name"></span></p>
         <p><strong>Cím:</strong> <span id="modal-address"></span></p>
-        <!-- További részletek hozzáadhatók -->
+        <h6>Kölcsönzött Szerszámok:</h6>
+        <ul id="modal-tools-borrowed">
+          <!-- Itt jelennek meg a kölcsönzött szerszámok -->
+        </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
@@ -124,6 +129,9 @@
 {% block scripts %}
 <script>
     $(document).ready(function(){
+        // Inicializáljuk a Bootstrap tooltips-eket
+        $('[data-toggle="tooltip"]').tooltip();
+
         $('#personModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget); // Az elem, ami kiváltotta a modal megjelenését
             var loanId = button.data('id'); // Az adat-id attribútum értéke
@@ -136,17 +144,31 @@
                     if(data.error){
                         $('#modal-name').text('Nincs adat');
                         $('#modal-address').text('');
+                        $('#modal-tools-borrowed').html('');
                         $('.modal-title').text('Személy Részletei');
                     } else {
                         $('#modal-name').text(data.name);
                         $('#modal-address').text(data.address);
                         // Frissítjük a modal címet is
                         $('.modal-title').text(data.name + ' Részletei');
+
+                        // Frissítjük a kölcsönzött szerszámok listáját
+                        if(data.tools_borrowed.length > 0){
+                            var toolsList = '<ul>';
+                            data.tools_borrowed.forEach(function(tool){
+                                toolsList += '<li>' + tool.name + ' (Kölcsönzés Dátuma: ' + tool.loan_date + ', Visszahozatal Dátuma: ' + tool.return_date + ')</li>';
+                            });
+                            toolsList += '</ul>';
+                            $('#modal-tools-borrowed').html(toolsList);
+                        } else {
+                            $('#modal-tools-borrowed').html('<p>Nincs kölcsönzött szerszám.</p>');
+                        }
                     }
                 },
                 error: function(){
                     $('#modal-name').text('Hiba történt');
                     $('#modal-address').text('');
+                    $('#modal-tools-borrowed').html('');
                     $('.modal-title').text('Személy Részletei');
                 }
             });

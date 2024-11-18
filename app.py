@@ -78,8 +78,8 @@ def loan():
         tool_id = request.form['tool_id']
         loan_days = int(request.form['loan_days'])
         
-        loan_date = datetime.today().date()
-        return_date = loan_date + timedelta(days=loan_days)
+        loan_date = datetime.today().strftime('%Y-%m-%d')  # Átalakítva stringgé
+        return_date = (datetime.today() + timedelta(days=loan_days)).strftime('%Y-%m-%d')  # Átalakítva stringgé
         
         conn = get_db_connection()
         
@@ -142,7 +142,7 @@ def loans():
 
     # Alkalmazzuk a LIMIT és OFFSET klauzulákat
     loans_query = f'''
-        SELECT loans.id, persons.name AS person_name, tools.name AS tool_name, loans.loan_date, loans.return_date
+        SELECT loans.id, persons.name AS person_name, tools.name AS tool_name, loans.loan_date, loans.return_date, tools.quantity AS tool_quantity
         FROM loans
         JOIN persons ON loans.person_id = persons.id
         JOIN tools ON loans.tool_id = tools.id
@@ -192,11 +192,23 @@ def person_details(loan_id):
     loan = conn.execute('SELECT * FROM loans WHERE id = ?', (loan_id,)).fetchone()
     if loan:
         person = conn.execute('SELECT * FROM persons WHERE id = ?', (loan['person_id'],)).fetchone()
-        conn.close()
         if person:
+            # Lekérjük az összes aktív kölcsönzést a személyhez (függetlenül a return_date-től)
+            active_loans = conn.execute('''
+                SELECT tools.name, loans.loan_date, loans.return_date
+                FROM loans
+                JOIN tools ON loans.tool_id = tools.id
+                WHERE loans.person_id = ?
+            ''', (loan['person_id'],)).fetchall()
+            
+            conn.close()
+            # Átalakítjuk az eredményt listává
+            tools_borrowed = [{'name': loan['name'], 'loan_date': loan['loan_date'], 'return_date': loan['return_date']} for loan in active_loans]
+            
             return jsonify({
                 'name': person['name'],
-                'address': person['address']
+                'address': person['address'],
+                'tools_borrowed': tools_borrowed
             })
     conn.close()
     return jsonify({'error': 'Személy nem található'}), 404
