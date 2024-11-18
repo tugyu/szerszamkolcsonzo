@@ -6,7 +6,7 @@ import math
 app = Flask(__name__)
 
 DATABASE = 'database.db'
-PER_PAGE = 10  # Rekordok száma oldalanként
+PER_PAGE = 6  # Rekordok száma oldalanként
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
